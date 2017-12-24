@@ -1,17 +1,10 @@
 {
-  "repositories": [
-    {
-      "url": "https://github.com/eskirex/dotify.git",
-      "type": "git"
-    }
-  ],
   "name": "eskirex/config",
   "type": "library",
   "description": "Eskirex Config Component",
   "keywords": [],
   "homepage": "http://www.eskirex.com",
   "license": "MIT",
-  "version": "dev-master",
   "authors": [
     {
       "name": "Eskirex",
