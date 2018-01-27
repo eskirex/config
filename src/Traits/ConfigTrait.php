@@ -11,20 +11,47 @@ trait ConfigTrait
     /**
      * @var Dotify
      */
-    public static $runtimeConfig = [];
-
+    public static $config;
 
     /**
      * @var Dotify
      */
     public $selected;
 
+
     protected function init($type, $dir = false)
     {
-        $fileFullName = ($dir ?: static::$runtimeConfig->get('dir')) . "$type.php";
+        $fileFullName = ($dir ?: $this->getConfig('dir')) . "$type.php";
         $readFile = $this->readFile($fileFullName);
         $this->selected = new Dotify($readFile);
     }
+
+
+    protected static function doConfigure($set)
+    {
+        if (static::$config === null) {
+            static::$config = new Dotify();
+        }
+
+        if (is_array($set)) {
+            static::$config->setArray($set);
+        }
+    }
+
+
+    protected function getConfig($get)
+    {
+        if (static::$config === null) {
+            return null;
+        }
+
+        if (static::$config->has($get)) {
+            return static::$config->get($get);
+        }
+
+        return null;
+    }
+
 
     protected function doFetch($key = false)
     {
@@ -35,6 +62,7 @@ trait ConfigTrait
         return $this->selected->all();
     }
 
+
     protected function readFile($fileFullName)
     {
         if (file_exists($fileFullName) === true) {
@@ -43,17 +71,4 @@ trait ConfigTrait
 
         throw new ConfigNotFoundException();
     }
-
-    protected static function doSetRuntimeConfig($arr)
-    {
-        static::$runtimeConfig = new Dotify(static::$runtimeConfig);
-
-        if (isset($arr['dir'])) {
-            if (is_dir($arr['dir'])) {
-                static::$runtimeConfig->set('dir', $arr['dir']);
-            }
-        }
-    }
-
-
 }

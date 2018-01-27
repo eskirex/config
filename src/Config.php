@@ -23,9 +23,9 @@ class Config
         return $this->doFetch();
     }
     
-    public static function config($configArr)
+    public static function configure($configArr)
     {
-        self::doSetRuntimeConfig($configArr);
+        self::doConfigure($configArr);
     }
 
 
