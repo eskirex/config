@@ -16,14 +16,14 @@ trait ConfigTrait
     /**
      * @var Dotify
      */
-    public $selected;
+    public $data;
 
 
     protected function init($type, $dir = false)
     {
         $fileFullName = ($dir ?: $this->getConfig('dir')) . "$type.php";
         $readFile = $this->readFile($fileFullName);
-        $this->selected = new Dotify($readFile);
+        $this->data = $readFile;
     }
 
 
@@ -56,10 +56,10 @@ trait ConfigTrait
     protected function doFetch($key = false)
     {
         if ($key !== false) {
-            return $this->selected->get($key);
+            return (new Dotify($this->data))->get($key);
         }
 
-        return $this->selected->all();
+        return (new Dotify($this->data))->all();
     }
 
 
